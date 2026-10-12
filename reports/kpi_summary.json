@@ -1,0 +1,14 @@
+{
+  "delivered_item_sales": 13221498.11,
+  "freight_charges": 2198275.64,
+  "fulfilled_order_value": 15419773.75,
+  "delivered_orders": 96478,
+  "average_order_value": 159.83,
+  "observed_payment_amount_all_orders": 16008872.12,
+  "strict_delivery_eligible_orders": 96281,
+  "average_delivery_days": 12.57,
+  "on_time_delivery_rate": 0.9188,
+  "average_order_level_review_score": 4.16,
+  "review_coverage_delivered_orders": 0.9933,
+  "payment_item_mismatch_orders": 376
+}

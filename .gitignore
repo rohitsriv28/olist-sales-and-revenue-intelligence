@@ -1,0 +1,12 @@
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+.ipynb_checkpoints/
+
+# Exclude 61MB geolocation dataset (not needed for core pipeline)
+data/raw/olist_geolocation_dataset.csv
+
+# OS files
+.DS_Store
+Thumbs.db
