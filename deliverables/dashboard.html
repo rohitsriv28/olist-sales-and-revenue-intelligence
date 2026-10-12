@@ -689,11 +689,11 @@
         <div class="header-actions">
           <div class="badge-pill">
             <span class="pulse"></span>
-            <span>96,478 Delivered Orders</span>
+            <span id="header-orders">96,478 Delivered Orders</span>
           </div>
           <div class="badge-pill">
             <i class="fa-solid fa-brazilian-real-sign"></i>
-            <span>R$ 13.22M Fulfilled GMV</span>
+            <span id="header-gmv">R$ 13.22M Fulfilled GMV</span>
           </div>
         </div>
       </header>
@@ -750,7 +750,7 @@
           </div>
           <div class="kpi-subtext">
             <i class="fa-solid fa-circle-check"></i>
-            <span class="kpi-highlight">87.2K</span> on-schedule orders
+            <span class="kpi-highlight" id="kpi-ontime-count">87.2K</span> on-schedule orders
           </div>
         </div>
 
@@ -779,7 +779,7 @@
           </div>
           <div class="kpi-subtext">
             <i class="fa-solid fa-circle-check"></i>
-            99.3% review response rate
+            <span id="kpi-review-coverage">99.3%</span> review response rate
           </div>
         </div>
       </div>
@@ -1136,6 +1136,40 @@
         if (!data) {
           console.error("Dashboard data not found!");
           return;
+        }
+
+        /* ---------- Dynamic KPI Cards & Header Binding ---------- */
+        if (data.kpis) {
+          const k = data.kpis;
+          const gmvMillions = (k.delivered_item_sales / 1e6).toFixed(2);
+          const freightMillions = (k.freight_charges / 1e6).toFixed(2);
+
+          // Header badges
+          const headerOrders = document.getElementById("header-orders");
+          if (headerOrders) headerOrders.textContent = `${k.delivered_orders.toLocaleString()} Delivered Orders`;
+          const headerGmv = document.getElementById("header-gmv");
+          if (headerGmv) headerGmv.textContent = `R$ ${gmvMillions}M Fulfilled GMV`;
+
+          // Top KPI cards
+          const elGmv = document.getElementById("kpi-gmv");
+          if (elGmv) elGmv.textContent = `R$ ${gmvMillions}M`;
+          const elFreight = document.getElementById("kpi-freight");
+          if (elFreight) elFreight.textContent = `R$ ${freightMillions}M`;
+          const elAov = document.getElementById("kpi-aov");
+          if (elAov) elAov.textContent = `R$ ${k.average_order_value.toFixed(2)}`;
+          const elOntime = document.getElementById("kpi-ontime");
+          if (elOntime) elOntime.textContent = `${(k.on_time_delivery_rate * 100).toFixed(2)}%`;
+          const elCycle = document.getElementById("kpi-cycle");
+          if (elCycle) elCycle.textContent = `${k.average_delivery_days.toFixed(2)}d`;
+          const elRating = document.getElementById("kpi-rating");
+          if (elRating) elRating.innerHTML = `${k.average_order_level_review_score.toFixed(2)} <span class="unit">/ 5.0</span>`;
+
+          // Subtexts
+          const ontimeCount = Math.round(k.strict_delivery_eligible_orders * k.on_time_delivery_rate);
+          const elOntimeCount = document.getElementById("kpi-ontime-count");
+          if (elOntimeCount) elOntimeCount.textContent = `${(ontimeCount / 1e3).toFixed(1)}K`;
+          const elCoverage = document.getElementById("kpi-review-coverage");
+          if (elCoverage) elCoverage.textContent = `${(k.review_coverage_delivered_orders * 100).toFixed(1)}%`;
         }
 
         /* ---------- 1. Monthly Trajectory ---------- */
